@@ -9,7 +9,6 @@ var LocalStrategy = require('passport-local');
 // Create local strategy
 var localOptions = { usernameField: 'email' };
 var localLogin = new LocalStrategy(localOptions, function(email, password, done) {
-	console.log('localLogin strategy used');
 	// Verify this username and password, call done with the user
 	// if it is the correct email and password
 	// otherwise, call done with false
@@ -67,6 +66,18 @@ var jwtLogin = new JwtStrategy(jwtOptions, function(payload, done) {
 		}
 	});
 });
+
+// used to serialize the user for the session
+passport.serializeUser(function(user, done) {
+    done(null, user);
+});
+
+// used to deserialize the user
+passport.deserializeUser(function(user, done) {
+	done(null, user);
+
+});
+
 
 // Tell passport to use this strategy
 passport.use(jwtLogin);

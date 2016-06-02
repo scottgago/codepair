@@ -9,7 +9,11 @@ module.exports = {
 	// Signin function:
 	// req passed in has user attribute set to false if signin info was wrong or user does not exist, or a user object with all its attributes
 	signin: function(req, res, next) {
-		res.send({ token: tokenForUser(req.user), name: req.user.attributes.name, email: req.user.attributes.email, language: req.user.attributes.language, skillLevel: req.user.attributes.skillLevel });
+		res.send({ token: tokenForUser(req.user),
+				   name: req.user.attributes.name,
+				   email: req.user.attributes.email,
+				   language: req.user.attributes.language,
+				   skillLevel: req.user.attributes.skillLevel });
 	},
 
 	// Signup function
