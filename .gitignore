@@ -21,3 +21,6 @@ logs
 .floobit
 .floo
 .flooignore
+
+# Node env variables
+environment.js

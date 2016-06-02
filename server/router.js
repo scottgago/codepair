@@ -2,15 +2,21 @@ var path = require('path');
 var Auth = require('./controllers/authController');
 var passportService = require('./config/passport');
 var passport = require('passport');
+var Strategy = require('passport-github').Strategy;
 var userController = require('./controllers/userController');
 var cardsController = require('./controllers/cardsController');
 var swipeController = require('./controllers/swipeController');
 var chatController = require('./controllers/chatController');
 var requireAuth = passport.authenticate('jwt', {session: false});
-var requireSignin = passport.authenticate('local', {session: false});
+var requireSignin = passport.authenticate('local', {session: true});
 var postController = require('./controllers/postController')
+var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
 
 module.exports = function(app){
+	// for sessions
+	app.use(passport.initialize());
+	app.use(passport.session());
+
 	// route to get index route
 	app.get('/', function(req, res, next){
 		res.sendFile(path.join(__dirname, '../client/index.html'));
@@ -65,6 +71,11 @@ module.exports = function(app){
 
 	// route if user clicks on a forum post to get the comments
 	app.post('/user/getComments', requireAuth, postController.getComments);
+
+	app.get('/profile', ensureLoggedIn, function(req, res,error){
+		console.log(req.user, 'user?')
+		res.sendFile(path.join(__dirname, '../client/index.html'));
+	});
 
 	// catch all route which redirects to index
 	app.get('*',function(req, res){

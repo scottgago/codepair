@@ -8,10 +8,14 @@ var path = require('path');
 
 app.use(morgan('combined'));
 app.use(cors());
+app.use(require('cookie-parser')());
 app.use(bodyParser.json({ type: '*/*' }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(require('express-session')({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
 app.use('/node_modules', express.static(__dirname + '/../node_modules'));
 app.use(express.static(path.join(__dirname, '../client')));
 app.use(express.static(path.join(__dirname, '/')));
+
 
 router(app);
 
