@@ -45,11 +45,26 @@ class Profile extends Component {
 	constructor(props){
 		super(props);
 
+		console.log(props, 'in profile props')
+		
+
+		function giveRank(){
+			var result = 0
+			var rounded = Math.round(props.rank)
+			for(var i = 1; i < rounded; i++){
+				results += 100*(1/i)
+			}
+			return result
+		}
+
+		var rank = giveRank()
+
 		this.state = {
 			email: this.props.profileEmail,
 			name:this.props.profileName,
 			language:this.props.profileLanguage,
-			skillLevel:this.props.profileSkillLevel
+			skillLevel:this.props.profileSkillLevel,
+			aggregateScore:this.props.aggregateScore
 		}
 	}
 
@@ -86,6 +101,7 @@ class Profile extends Component {
 	}
 
 	handleEditInfo() {
+		console.log(this.state)
 		flag = !flag;
 		prompt = flag ? ' Edit info:':'Cancel';
 		this.setState({
@@ -181,6 +197,7 @@ class Profile extends Component {
 							<h3>Welcome {this.props.profileName}</h3>
 							<div>
 									<Avatar size={250} style={style.profilePic} src={this.props.profilePicture} />
+									<span>HackerRank: {this.props.aggregateScore}</span>
 									<br/>
 										{this.renderEditBox()}
 									<br/>
@@ -207,8 +224,22 @@ class Profile extends Component {
 }
 
 function mapStateToProps(state){
+
+	console.log(state)
+
+	function giveRank(){
+		var result = 0
+		for(var i = 1; i < state.profile.aggregateScore; i++){
+			result += 300*(1/i)
+		}
+		return Math.round(result * 100)/100
+	}
+
+	var rank = giveRank()
+
 	return { 
 		fromUser: state.profile,
+		aggregateScore: rank,
 		profileID: state.profile.id,
 		profileEmail: state.profile.email, 
 		profileName: state.profile.name, 
@@ -220,6 +251,8 @@ function mapStateToProps(state){
 		waiting: state.response.waiting 
 	};
 }
+
+
 
 export default reduxForm({
 	form: 'profile',

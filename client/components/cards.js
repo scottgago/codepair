@@ -101,6 +101,7 @@ class Cards extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log(state, " in cards")
 	return { current: state.cards.current, cardID: state.cards.current.id, initiated: state.cards.initiated, uninitiated: state.cards.uninitiated, userID: state.profile.id };
 }
 

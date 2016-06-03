@@ -29,6 +29,8 @@ export const CLEAR_PARTNER = "CLEAR_PARTNER";
 export const JOIN_SESSION = "JOIN_SESSION";
 export const LEAVE_SESSION = "LEAVE_SESSION";
 export const INVITE_RECEIVED = "INVITE_RECEIVED";
-	//actions for handling forum
+// Actions for handling forum
 export const GET_POSTS = 'GET_POSTS';
 export const GET_COMMENTS = 'GET_COMMENTS';
+// Actions for posting feedback
+export const POST_FEEDBACK = 'POST_FEEDBACK'

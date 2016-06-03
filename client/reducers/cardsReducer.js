@@ -11,6 +11,7 @@ const INITIAL_STATE = {
 };
 
 export default function(state = INITIAL_STATE, action) {
+	console.log(action)
 	switch(action.type){
 		case GET_CARDS:
 			var initiatedCards = action.payload.cards.initiated.slice();

@@ -46,7 +46,8 @@ module.exports = {
 				skillLevel: skillLevel,
 				password: password,
 				github_handle: github,
-				profile_url: profilePic
+				profile_url: profilePic,
+				aggregateScore: 0
 			});
 
 			user.save().then(function(newUser) {

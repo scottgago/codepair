@@ -8,6 +8,8 @@ import * as actions from '../actions';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Chat from './chat';
+import Feedback from './feedback';
+import RaisedButton from 'material-ui/RaisedButton';
 // Imports language libraries to use in Ace Editor
 import 'brace/mode/javascript';
 import 'brace/mode/java';
@@ -25,6 +27,9 @@ const style = {
 		height: 800,
 		backgroundColor: '#3D3D3D',
 		position: 'relative',
+	},
+	button: {
+		width: '50%',
 	},
 	optionsBar: {
 		width: '100%',
@@ -70,8 +75,12 @@ class CodeShare extends Component {
 			language: 'javascript',
 			value: 1,
 			codeData: '',
-			chatData: ''
+			chatData: '',
+			modalIsOpen: false,
+			submitted: false,
+			buttonText: "Give this user Feedback"
 		}
+		
 	}
 
 	handleChange(event, index, value) {
@@ -80,6 +89,13 @@ class CodeShare extends Component {
 		});
 		this.socket.emit('changeLanguage', { room: this.props.sessionID, language: value });
 	}
+	openModal() {
+		if(!this.state.submitted){
+    		this.setState({modalIsOpen: true})
+    		this.setState({submitted: true})
+    		this.setState({buttonText: "Thank you for your feedback!"})
+    	}
+  	}
 
 	componentDidMount(){
 		this.socket = io();
@@ -133,7 +149,9 @@ class CodeShare extends Component {
 		          <MenuItem value={'python'} primaryText="Python" />
 		          <MenuItem value={'ruby'} primaryText="Ruby" />
 		        </DropDownMenu>
-				}/>			
+				}/>
+				<Feedback partnerName={this.state} props={this.props}/>
+				<RaisedButton onClick = {() => this.openModal()} label = {this.state.buttonText} style = {style.button}/>		
 				<AceEditor
 				    mode={this.state.language}
 				    theme="ambiance"
@@ -147,7 +165,7 @@ class CodeShare extends Component {
 				    onChange={(value) => this.onChange(value)}
 				    name="UNIQUE_ID_OF_DIV"
 				    editorProps={{$blockScrolling: true}}
-			  />
+			  	/>
 				<div style={style.chatBox}>
 					<Chat partnerName={this.props.partner.name}/>
 				</div>

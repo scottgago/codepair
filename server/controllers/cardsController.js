@@ -19,7 +19,8 @@ module.exports = {
 			language: req.user.attributes.language, 
 			skillLevel: req.user.attributes.skillLevel, 
 			github_handle: req.user.attributes.github_handle, 
-			profile_url: req.user.attributes.profile_url 
+			profile_url: req.user.attributes.profile_url,
+			aggregateScore: req.user.attributes.aggregateScore 
 		};
 
 		// Query to get waiting array
@@ -67,7 +68,7 @@ module.exports = {
 		});
 
 		Promise.all([matchesPromise, initiatedPromise, uninitiatedPromise, waitingPromise]).then(function(values){
-			res.send({ id: userObject.id, name: userObject.name, email: userObject.email, language: userObject.language, skillLevel: userObject.skillLevel, github_handle: userObject.github_handle, profile_url: userObject.profile_url,
+			res.send({ aggregateScore: userObject.aggregateScore, id: userObject.id, name: userObject.name, email: userObject.email, language: userObject.language, skillLevel: userObject.skillLevel, github_handle: userObject.github_handle, profile_url: userObject.profile_url,
 				cards: {
 					waiting: values[3],
 					uninitiated: values[2],

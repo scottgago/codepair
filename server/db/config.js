@@ -23,6 +23,7 @@ knex.schema.hasTable('users').then(function(exists){
 			user.varchar('language',255);
 			user.string('skillLevel',255);
 			user.varchar('github_handle',255);
+			user.integer('aggregateScore');
 			user.string('profile_url',1000).defaultTo('https://upload.wikimedia.org/wikipedia/en/b/b1/Portrait_placeholder.png');
 			user.timestamps();
 		}).then(function (table) {

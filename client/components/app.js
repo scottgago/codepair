@@ -5,6 +5,7 @@ import MatchAlert from './matchAlert';
 import Chat from './chat';
 import Paper from 'material-ui/Paper';
 import Footer from './footer';
+import Feedback from './feedback';
 
 const style = {
 		paper: {

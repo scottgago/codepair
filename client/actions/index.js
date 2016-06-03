@@ -26,7 +26,7 @@ export function signinUser({ email, password }) {
 				localStorage.setItem('token', response.data.token);
 				// dispatch action to set current users info
 				dispatch({ type: UPDATE_USER, payload: { 
-					email: response.data.email, name: response.data.name, language: response.data.language, skillLevel: response.data.skillLevel
+					email: response.data.email, name: response.data.name, language: response.data.language, skillLevel: response.data.skillLevel, aggregateScore: response.data.aggregateScore
 				}});
 				// if signin is successful push user
 				// to their profile page
@@ -58,7 +58,7 @@ export function signupUser({ email, name, language, skillLevel, password, github
 				var profileUrl = profile_url.length > 0 ? profile_url : 'https://avatars3.githubusercontent.com/u/9919?v=3&s=280';
 				// dispatch action to set current users info
 				dispatch({ type: UPDATE_USER, payload: { 
-					id: id, email: email, name: name, language: language, skillLevel: skillLevel, github_handle: github_handle, profile_url: profileUrl
+					id: id, email: email, name: name, language: language, skillLevel: skillLevel, github_handle: github_handle, profile_url: profileUrl, aggregateScore: 0
 				}});
 			})
 			.catch(response => {
@@ -81,12 +81,14 @@ export function getUserInfo() {
 			headers: { authorization: localStorage.getItem('token') }
 		})
 			.then(response => {
-				console.log(response);
+				console.log(response, "in user/profile");
 				// dispatch action to set current users info
 				dispatch({ type: UPDATE_USER, payload: { 
-					id: response.data.id, email: response.data.email, name: response.data.name, language: response.data.language, skillLevel: response.data.skillLevel, github_handle: response.data.github_handle, profile_url: response.data.profile_url
+					aggregateScore: response.data.aggregateScore, id: response.data.id, email: response.data.email, name: response.data.name, language: response.data.language, skillLevel: response.data.skillLevel, github_handle: response.data.github_handle, profile_url: response.data.profile_url
 				}});
-				dispatch({ type: USER_INITIATED });
+				dispatch({ type: USER_INITIATED, payload: {
+					aggregateScore: response.data.aggregateScore, id: response.data.id, email: response.data.email, name: response.data.name, language: response.data.language, skillLevel: response.data.skillLevel, github_handle: response.data.github_handle, profile_url: response.data.profile_url
+				}});
 			})
 			.catch(response => {
 				console.log('error in getUserInfo action creator: ',response);
@@ -144,9 +146,10 @@ export function getCards() {
 			.then(response => {
 				console.log('getCards response received');
 				console.log('getCards response is : ',response);
+				console.log(response, 'in getCards()')
 				dispatch({ type: GET_CARDS, payload: response.data })
 				// Dispatch action that signals server response has been received
-				dispatch({ type: RESPONSE_RECEIVED });
+				dispatch({ type: RESPONSE_RECEIVED, payload: response.data});
 				socket.emit('getOnlineUsers');
 			})
 			.catch(response => {
@@ -383,5 +386,17 @@ export function createMessage({fromID, toID, message}) {
 			})
 			.catch(response => {
 				console.log('error in createMessage action creator: ',response);
+			})
+}
+export function sendFeedback({toID, answers}) {
+	console.log({toID, answers})
+	axios.post(`${API_URL}/api/sendFeedback`, {toID, answers}, {
+		headers: { authorization: localStorage.getItem('token') }
+	})
+		.then(response => {
+				console.log('feedback submitted');
+			})
+			.catch(response => {
+				console.log('error in submitting feedback: ',response);
 			})
 }

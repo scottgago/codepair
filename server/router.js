@@ -6,6 +6,7 @@ var userController = require('./controllers/userController');
 var cardsController = require('./controllers/cardsController');
 var swipeController = require('./controllers/swipeController');
 var chatController = require('./controllers/chatController');
+var feedbackController = require('./controllers/feedbackController')
 var requireAuth = passport.authenticate('jwt', {session: false});
 var requireSignin = passport.authenticate('local', {session: true});
 var postController = require('./controllers/postController');
@@ -36,7 +37,8 @@ module.exports = function(app){
 			language: req.user.attributes.language, 
 			skillLevel: req.user.attributes.skillLevel, 
 			github_handle: req.user.attributes.github_handle, 
-			profile_url: req.user.attributes.profile_url 
+			profile_url: req.user.attributes.profile_url,
+			aggregateScore : req.user.attributes.aggregateScore 
 		};
 		res.send(userObject);
 	});
@@ -61,6 +63,8 @@ module.exports = function(app){
 
 	// route if user getspost for the forum
 	app.post('/user/postMessage', requireAuth, postController.postMessage);
+
+	app.post('/api/sendFeedback', requireAuth, feedbackController.postFeedback);
 
 		// route if user getspost for the forum
 	app.post('/user/postComment', requireAuth, postController.postComment);
