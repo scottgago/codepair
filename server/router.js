@@ -8,7 +8,7 @@ var swipeController = require('./controllers/swipeController');
 var chatController = require('./controllers/chatController');
 var requireAuth = passport.authenticate('jwt', {session: false});
 var requireSignin = passport.authenticate('local', {session: true});
-var postController = require('./controllers/postController')
+var postController = require('./controllers/postController');
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn();
 
 module.exports = function(app){
