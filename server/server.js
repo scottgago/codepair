@@ -16,7 +16,6 @@ app.use('/node_modules', express.static(__dirname + '/../node_modules'));
 app.use(express.static(path.join(__dirname, '../client')));
 app.use(express.static(path.join(__dirname, '/')));
 
-
 router(app);
 
 var port = process.env.PORT || 3090;

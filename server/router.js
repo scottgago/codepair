@@ -2,7 +2,6 @@ var path = require('path');
 var Auth = require('./controllers/authController');
 var passportService = require('./config/passport');
 var passport = require('passport');
-var Strategy = require('passport-github').Strategy;
 var userController = require('./controllers/userController');
 var cardsController = require('./controllers/cardsController');
 var swipeController = require('./controllers/swipeController');
@@ -72,8 +71,9 @@ module.exports = function(app){
 	// route if user clicks on a forum post to get the comments
 	app.post('/user/getComments', requireAuth, postController.getComments);
 
+	// route for profile
 	app.get('/profile', ensureLoggedIn, function(req, res,error){
-		console.log(req.user, 'user?')
+		// send user to index page.  React router draws the state based off url
 		res.sendFile(path.join(__dirname, '../client/index.html'));
 	});
 
